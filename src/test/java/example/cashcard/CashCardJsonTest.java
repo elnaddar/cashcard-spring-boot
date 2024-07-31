@@ -22,5 +22,18 @@ class CashCardJsonTest {
         assertThat(json.write(cashcard)).extractingJsonPathNumberValue("@.id").isEqualTo(99);
         assertThat(json.write(cashcard)).hasJsonPathNumberValue("@.amount");
         assertThat(json.write(cashcard)).extractingJsonPathNumberValue("@.amount").isEqualTo(123.45);
-    }    
+    }
+
+    @Test
+    void cashCardDeserializationTest() throws IOException{
+        String expected = """
+                {
+                    "id":99,
+                    "amount":123.45
+                }
+                """;
+        assertThat(json.parse(expected)).isEqualTo(new CashCard(1000L, 67.80));
+        assertThat(json.parseObject(expected).id()).isEqualTo(1000L);
+        assertThat(json.parseObject(expected).amount()).isEqualTo(67.80);
+    }
 }
