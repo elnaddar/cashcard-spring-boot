@@ -17,7 +17,7 @@ class CashCardApllicationTests {
     TestRestTemplate restTemplate;
 
     @Test
-    void shouldReturnACashCardWhenDataIsSaved(){
+    void shouldReturnACashCardWhenDataIsSaved() {
         ResponseEntity<String> response = restTemplate.getForEntity("/cashcards/99", String.class);
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
 
@@ -31,9 +31,17 @@ class CashCardApllicationTests {
     }
 
     @Test
-    void shouldNotReturnACashCardWithAnUnknownId(){
+    void shouldNotReturnACashCardWithAnUnknownId() {
         ResponseEntity<String> respose = restTemplate.getForEntity("/cashcards/1000", String.class);
         assertThat(respose.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
         assertThat(respose.getBody()).isBlank();
+    }
+
+    @Test
+    void shouldCreateANewCashCard(){
+        CashCard newCashCard = new CashCard(null, 250.00);
+        ResponseEntity<Void> createResponse = restTemplate.postForEntity("/cashcards", newCashCard, Void.class);
+
+        assertThat(createResponse.getStatusCode()).isEqualTo(HttpStatus.OK);
     }
 }
