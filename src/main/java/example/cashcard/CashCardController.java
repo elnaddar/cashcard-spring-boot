@@ -45,7 +45,7 @@ class CashCardController {
     @GetMapping
     private ResponseEntity<List<CashCard>> findAll(Pageable pageable) {
         Page<CashCard> page = cardRepository.findAll(
-                PageRequest.of(pageable.getPageNumber(), pageable.getPageSize()));
+                PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), pageable.getSort()));
         return ResponseEntity.ok(page.getContent());
     }
 }
