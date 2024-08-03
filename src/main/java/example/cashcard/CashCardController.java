@@ -19,6 +19,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 import java.util.List;
 import java.util.Optional;
 import java.net.URI;
+import java.security.Principal;
 
 @RestController
 @RequestMapping("/cashcards")
@@ -30,8 +31,9 @@ class CashCardController {
     };
 
     @GetMapping("/{requestId}")
-    private ResponseEntity<CashCard> findById(@PathVariable("requestId") Long requestId) {
-        Optional<CashCard> cashCardOptional = cardRepository.findById(requestId);
+    private ResponseEntity<CashCard> findById(@PathVariable("requestId") Long requestId, Principal principal) {
+        Optional<CashCard> cashCardOptional = Optional
+                .ofNullable(cardRepository.findByIdAndOwner(requestId, principal.getName()));
         if (cashCardOptional.isPresent()) {
             return ResponseEntity.ok(cashCardOptional.get());
         } else {
@@ -47,13 +49,12 @@ class CashCardController {
     }
 
     @GetMapping
-    private ResponseEntity<List<CashCard>> findAll(Pageable pageable) {
-        Page<CashCard> page = cardRepository.findAll(
+    private ResponseEntity<List<CashCard>> findAll(Pageable pageable, Principal principal) {
+        Page<CashCard> page = cardRepository.findByOwner(principal.getName(),
                 PageRequest.of(
                         pageable.getPageNumber(),
                         pageable.getPageSize(),
-                        pageable.getSortOr(Sort.by(Sort.Direction.ASC, "amount"))
-                ));
+                        pageable.getSortOr(Sort.by(Sort.Direction.ASC, "amount"))));
         return ResponseEntity.ok(page.getContent());
     }
 }
