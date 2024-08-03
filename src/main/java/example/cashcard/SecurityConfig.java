@@ -29,9 +29,13 @@ class SecurityConfig {
         User.UserBuilder users = User.builder();
         UserDetails sarah = users.username("sarah1")
                 .password(passwordEncoder.encode("abc123"))
-                .roles()
+                .roles("CARD-OWNER")
                 .build();
-        return new InMemoryUserDetailsManager(sarah);
+        UserDetails hankOwnsNoCards = users.username("hank-owns-no-card")
+                .password(passwordEncoder.encode("123abc"))
+                .roles("NON-OWNER")
+                .build();
+        return new InMemoryUserDetailsManager(sarah, hankOwnsNoCards);
     }
 
     @Bean
