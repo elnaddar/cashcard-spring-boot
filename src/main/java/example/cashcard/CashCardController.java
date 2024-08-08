@@ -60,9 +60,11 @@ class CashCardController {
     }
 
     @PutMapping("/{id}")
-    private ResponseEntity<Void> putCashCard(@PathVariable Long id, @RequestBody CashCard entity) {
-        //TODO: process PUT request
-        
+    private ResponseEntity<Void> putCashCard(@PathVariable Long id, @RequestBody CashCard entity, Principal principal) {
+        CashCard cashCard = cardRepository.findByIdAndOwner(id, principal.getName());
+        CashCard updatedCashCard = new CashCard(cashCard.id(), entity.amount(), principal.getName());
+
+        cardRepository.save(updatedCashCard);        
         return ResponseEntity.noContent().build();
     }
 }
