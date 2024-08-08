@@ -4,6 +4,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.http.HttpEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -17,6 +18,8 @@ import java.util.List;
 import java.util.Optional;
 import java.net.URI;
 import java.security.Principal;
+import org.springframework.web.bind.annotation.PutMapping;
+
 
 @RestController
 @RequestMapping("/cashcards")
@@ -54,5 +57,12 @@ class CashCardController {
                         pageable.getPageSize(),
                         pageable.getSortOr(Sort.by(Sort.Direction.ASC, "amount"))));
         return ResponseEntity.ok(page.getContent());
+    }
+
+    @PutMapping("/{id}")
+    private ResponseEntity<Void> putCashCard(@PathVariable Long id, @RequestBody CashCard entity) {
+        //TODO: process PUT request
+        
+        return ResponseEntity.noContent().build();
     }
 }
