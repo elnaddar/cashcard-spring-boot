@@ -4,7 +4,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.http.HttpEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -15,7 +14,6 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.util.List;
-import java.util.Optional;
 import java.net.URI;
 import java.security.Principal;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -31,10 +29,9 @@ class CashCardController {
 
     @GetMapping("/{requestId}")
     private ResponseEntity<CashCard> findById(@PathVariable("requestId") Long requestId, Principal principal) {
-        Optional<CashCard> cashCardOptional = Optional
-                .ofNullable(cardRepository.findByIdAndOwner(requestId, principal.getName()));
-        if (cashCardOptional.isPresent()) {
-            return ResponseEntity.ok(cashCardOptional.get());
+        CashCard cashCard = cardRepository.findByIdAndOwner(requestId, principal.getName());
+        if (cashCard != null) {
+            return ResponseEntity.ok(cashCard);
         } else {
             return ResponseEntity.notFound().build();
         }
