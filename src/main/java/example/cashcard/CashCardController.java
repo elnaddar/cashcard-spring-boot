@@ -20,7 +20,6 @@ import java.net.URI;
 import java.security.Principal;
 import org.springframework.web.bind.annotation.PutMapping;
 
-
 @RestController
 @RequestMapping("/cashcards")
 class CashCardController {
@@ -42,7 +41,8 @@ class CashCardController {
     }
 
     @PostMapping
-    private ResponseEntity<Void> createCashCard(@RequestBody CashCard newCashCardRequest, UriComponentsBuilder ucb, Principal principal) {
+    private ResponseEntity<Void> createCashCard(@RequestBody CashCard newCashCardRequest, UriComponentsBuilder ucb,
+            Principal principal) {
         CashCard cashCardWithOwner = new CashCard(null, newCashCardRequest.amount(), principal.getName());
         CashCard savedCashCard = cardRepository.save(cashCardWithOwner);
         URI locationOfNewCashCard = ucb.path("cashcards/{id}").buildAndExpand(savedCashCard.id()).toUri();
@@ -62,9 +62,13 @@ class CashCardController {
     @PutMapping("/{id}")
     private ResponseEntity<Void> putCashCard(@PathVariable Long id, @RequestBody CashCard entity, Principal principal) {
         CashCard cashCard = cardRepository.findByIdAndOwner(id, principal.getName());
-        CashCard updatedCashCard = new CashCard(cashCard.id(), entity.amount(), principal.getName());
+        if (cashCard != null) {
+            CashCard updatedCashCard = new CashCard(cashCard.id(), entity.amount(), principal.getName());
 
-        cardRepository.save(updatedCashCard);        
-        return ResponseEntity.noContent().build();
+            cardRepository.save(updatedCashCard);
+            return ResponseEntity.noContent().build();
+        } else {
+            return ResponseEntity.notFound().build();
+        }
     }
 }
