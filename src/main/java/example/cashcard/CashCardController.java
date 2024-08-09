@@ -58,7 +58,8 @@ class CashCardController {
     }
 
     @PutMapping("/{id}")
-    private ResponseEntity<Void> putCashCard(@PathVariable Long id, @RequestBody CashCard entity, Principal principal) {
+    private ResponseEntity<Void> putCashCard(@PathVariable("id") Long id, @RequestBody CashCard entity,
+            Principal principal) {
         CashCard cashCard = cardRepository.findByIdAndOwner(id, principal.getName());
         if (cashCard != null) {
             CashCard updatedCashCard = new CashCard(cashCard.id(), entity.amount(), principal.getName());
@@ -71,7 +72,7 @@ class CashCardController {
     }
 
     @DeleteMapping("/{id}")
-    private ResponseEntity<Void> deleteCashCard(@PathVariable Long id, Principal principal) {
+    private ResponseEntity<Void> deleteCashCard(@PathVariable("id") Long id, Principal principal) {
         CashCard cashCard = cardRepository.findByIdAndOwner(id, principal.getName());
         if (cashCard != null) {
             cardRepository.deleteById(id);
