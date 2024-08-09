@@ -1,11 +1,12 @@
 # CashCard Spring Boot Application
 
-This is a Spring Boot application for managing CashCards. The application exposes a RESTful API for creating, retrieving, updating, and deleting CashCards. It also includes a basic security configuration.
+This is a Spring Boot application for managing CashCards. The application exposes a RESTful API for creating, retrieving, updating, and deleting CashCards. It also includes basic security configuration and API documentation with Swagger.
 
 ## Features
 
 - Create, retrieve, update, and delete CashCards.
 - Basic authentication and authorization using Spring Security.
+- API documentation with Swagger.
 - Unit and integration tests included.
 
 ## Prerequisites
@@ -33,6 +34,16 @@ You can build and run the application using Gradle.
 
 The application will start on `http://localhost:8080`.
 
+### API Documentation
+
+The application uses Swagger for API documentation. Once the application is running, you can access the Swagger UI at:
+
+```
+http://localhost:8080/swagger-ui/index.html
+```
+
+This will give you an interactive interface to explore and test the API endpoints.
+
 ### Running Tests
 
 To run the unit and integration tests:
@@ -40,10 +51,6 @@ To run the unit and integration tests:
 ```bash
 ./gradlew test
 ```
-
-### API Documentation
-
-API endpoints and their usage are documented in the source code comments. You can access the API via tools like Postman or curl.
 
 ## Project Structure
 
